@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EGUIS | Cinturones de Cuero</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+  <div class="logo">EGUIS</div>
+
+  <nav class="menu">
+    <a href="#">NOVEDADES</a>
+    <a href="#" class="active">COLECCIÓN</a>
+    <a href="#">HOMBRE</a>
+    <a href="#">MUJER</a>
+    <a href="#">CONTACTO</a>
+  </nav>
+
+  <button class="cart-button" onclick="toggleCart()">
+    🛒 <span id="cart-count">0</span>
+  </button>
+</header>
+
+
+<main>
+
+  <div class="breadcrumb">
+    Inicio &nbsp;›&nbsp; Colección &nbsp;›&nbsp; Cinturones
+  </div>
+
+
+  <section class="shop-container">
+
+    <!-- FILTROS -->
+    <aside class="filters">
+
+      <h3>Filtros</h3>
+
+      <div class="filter-group">
+        <h4>Género</h4>
+
+        <label>
+          <input type="radio" name="genero" value="todos" checked>
+          Todos
+        </label>
+
+        <label>
+          <input type="radio" name="genero" value="hombre">
+          Hombre
+        </label>
+
+        <label>
+          <input type="radio" name="genero" value="mujer">
+          Mujer
+        </label>
+      </div>
+
+
+      <div class="filter-group">
+        <h4>Color</h4>
+
+        <button class="color black" onclick="filterColor('negro')"></button>
+        <button class="color brown" onclick="filterColor('marron')"></button>
+        <button class="color beige" onclick="filterColor('beige')"></button>
+      </div>
+
+
+      <div class="filter-group">
+        <h4>Talla</h4>
+
+        <label>
+          <input type="checkbox">
+          85 cm
+        </label>
+
+        <label>
+          <input type="checkbox">
+          90 cm
+        </label>
+
+        <label>
+          <input type="checkbox">
+          95 cm
+        </label>
+
+        <label>
+          <input type="checkbox">
+          100 cm
+        </label>
+
+        <label>
+          <input type="checkbox">
+          105 cm
+        </label>
+      </div>
+
+    </aside>
+
+
+    <!-- PRODUCTOS -->
+    <section class="products-area">
+
+      <div class="products-top">
+        <h2>Cinturones de cuero</h2>
+
+        <select id="sort-products">
+          <option value="default">Ordenar</option>
+          <option value="price-low">Precio menor</option>
+          <option value="price-high">Precio mayor</option>
+        </select>
+      </div>
+
+
+      <div id="products-grid" class="products-grid">
+
+        <article
+          class="product"
+          data-gender="hombre"
+          data-color="negro"
+          data-price="35"
+        >
+
+          <img
+            src="imagenes/cinturon-negro-hombre.jpg"
+            alt="Cinturón negro de cuero para hombre"
+          >
+
+          <h3>Cinturón Clásico Negro</h3>
+
+          <p class="description">
+            Cuero para hombre con hebilla metálica.
+          </p>
+
+          <span class="price">S/ 35.00</span>
+
+          <button
+            onclick="addToCart(
+              'Cinturón Clásico Negro',
+              35
+            )"
+          >
+            Agregar al carrito
+          </button>
+
+        </article>
+
+
+        <article
+          class="product"
+          data-gender="hombre"
+          data-color="marron"
+          data-price="38"
+        >
+
+          <img
+            src="imagenes/cinturon-marron-hombre.jpg"
+            alt="Cinturón marrón de cuero para hombre"
+          >
+
+          <h3>Cinturón Marrón Premium</h3>
+
+          <p class="description">
+            Diseño clásico en cuero marrón.
+          </p>
+
+          <span class="price">S/ 38.00</span>
+
+          <button
+            onclick="addToCart(
+              'Cinturón Marrón Premium',
+              38
+            )"
+          >
+            Agregar al carrito
+          </button>
+
+        </article>
+
+
+        <article
+          class="product"
+          data-gender="mujer"
+          data-color="negro"
+          data-price="32"
+        >
+
+          <img
+            src="imagenes/cinturon-negro-mujer.jpg"
+            alt="Cinturón negro de cuero para mujer"
+          >
+
+          <h3>Cinturón Dama Negro</h3>
+
+          <p class="description">
+            Cinturón delgado de cuero para mujer.
+          </p>
+
+          <span class="price">S/ 32.00</span>
+
+          <button
+            onclick="addToCart(
+              'Cinturón Dama Negro',
+              32
+            )"
+          >
+            Agregar al carrito
+          </button>
+
+        </article>
+
+
+        <article
+          class="product"
+          data-gender="mujer"
+          data-color="beige"
+          data-price="36"
+        >
+
+          <img
+            src="imagenes/cinturon-beige-mujer.jpg"
+            alt="Cinturón beige para mujer"
+          >
+
+          <h3>Cinturón Dama Beige</h3>
+
+          <p class="description">
+            Diseño elegante para uso casual.
+          </p>
+
+          <span class="price">S/ 36.00</span>
+
+          <button
+            onclick="addToCart(
+              'Cinturón Dama Beige',
+              36
+            )"
+          >
+            Agregar al carrito
+          </button>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </section>
+
+</main>
+
+
+<!-- CARRITO -->
+<div id="cart-panel" class="cart-panel">
+
+  <div class="cart-header">
+    <h2>Mi carrito</h2>
+
+    <button onclick="toggleCart()">✕</button>
+  </div>
+
+  <div id="cart-items"></div>
+
+  <div class="cart-total">
+    Total:
+    <strong>S/ <span id="cart-total">0.00</span></strong>
+  </div>
+
+  <button
+    class="whatsapp-button"
+    onclick="sendWhatsApp()"
+  >
+    Pedir por WhatsApp
+  </button>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
