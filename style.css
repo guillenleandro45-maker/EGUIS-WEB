@@ -1,462 +1,482 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+let cart = [];
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #ffffff;
-  color: #222;
-}
+let selectedColor = "todos";
 
 
-/* HEADER */
+/* =========================
+   CARRITO
+========================= */
 
-.header {
-  height: 75px;
+function addToCart(name, price) {
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 6%;
-
-  border-bottom: 1px solid #e5e5e5;
-
-  position: sticky;
-  top: 0;
-
-  background: white;
-
-  z-index: 100;
-}
+  const existingProduct =
+    cart.find(item => item.name === name);
 
 
-.logo {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  if (existingProduct) {
+
+    existingProduct.quantity++;
+
+  } else {
+
+    cart.push({
+      name: name,
+      price: price,
+      quantity: 1
+    });
+
+  }
+
+
+  updateCart();
+
+  openCart();
 }
 
 
-.menu {
-  display: flex;
-  gap: 30px;
+function updateCart() {
+
+  const cartItems =
+    document.getElementById("cart-items");
+
+  const cartCount =
+    document.getElementById("cart-count");
+
+  const cartTotal =
+    document.getElementById("cart-total");
+
+
+  cartItems.innerHTML = "";
+
+
+  let total = 0;
+
+  let totalQuantity = 0;
+
+
+  cart.forEach((item, index) => {
+
+    const subtotal =
+      item.price * item.quantity;
+
+
+    total += subtotal;
+
+    totalQuantity += item.quantity;
+
+
+    const element =
+      document.createElement("div");
+
+
+    element.className = "cart-item";
+
+
+    element.innerHTML = `
+      <div>
+        <div class="cart-item-title">
+          ${item.name}
+        </div>
+
+        <div class="cart-item-info">
+          ${item.quantity} x
+          S/ ${item.price.toFixed(2)}
+        </div>
+      </div>
+
+      <button
+        onclick="removeFromCart(${index})"
+        aria-label="Eliminar producto"
+      >
+        ✕
+      </button>
+    `;
+
+
+    cartItems.appendChild(element);
+
+  });
+
+
+  if (cart.length === 0) {
+
+    cartItems.innerHTML = `
+      <p style="
+        padding:25px 0;
+        color:#777;
+        font-size:13px;
+      ">
+        Tu carrito está vacío.
+      </p>
+    `;
+
+  }
+
+
+  cartCount.textContent =
+    totalQuantity;
+
+
+  cartTotal.textContent =
+    total.toFixed(2);
+
 }
 
 
-.menu a {
-  text-decoration: none;
-  color: #333;
+function removeFromCart(index) {
 
-  font-size: 12px;
-  letter-spacing: 1px;
+  cart.splice(index, 1);
 
-  padding: 28px 0 10px;
+  updateCart();
+
 }
 
 
-.menu a:hover,
-.menu .active {
-  border-bottom: 2px solid #111;
+function openCart() {
+
+  document
+    .getElementById("cart-panel")
+    .classList.add("open");
+
+
+  document
+    .getElementById("overlay")
+    .classList.add("active");
+
 }
 
 
-.cart-button {
-  border: none;
-  background: none;
+function toggleCart() {
 
-  font-size: 18px;
+  const cartPanel =
+    document.getElementById("cart-panel");
 
-  cursor: pointer;
-}
 
+  const isOpen =
+    cartPanel.classList.contains("open");
 
-/* MAIN */
 
-main {
-  width: 92%;
-  max-width: 1400px;
+  closePanels();
 
-  margin: auto;
-}
 
+  if (!isOpen) {
 
-.breadcrumb {
-  font-size: 12px;
+    cartPanel.classList.add("open");
 
-  padding: 25px 0;
+    document
+      .getElementById("overlay")
+      .classList.add("active");
 
-  color: #777;
-}
-
-
-/* CONTENEDOR */
-
-.shop-container {
-  display: grid;
-
-  grid-template-columns: 220px 1fr;
-
-  gap: 35px;
-}
-
-
-/* FILTROS */
-
-.filters {
-  border-right: 1px solid #eee;
-
-  padding-right: 25px;
-}
-
-
-.filters h3 {
-  font-size: 16px;
-
-  margin-bottom: 25px;
-}
-
-
-.filter-group {
-  margin-bottom: 30px;
-}
-
-
-.filter-group h4 {
-  font-size: 13px;
-
-  margin-bottom: 15px;
-}
-
-
-.filter-group label {
-  display: block;
-
-  margin-bottom: 10px;
-
-  font-size: 13px;
-
-  cursor: pointer;
-}
-
-
-.filter-group input {
-  margin-right: 8px;
-}
-
-
-/* COLORES */
-
-.color {
-  width: 20px;
-  height: 20px;
-
-  border-radius: 50%;
-
-  border: 1px solid #aaa;
-
-  margin-right: 8px;
-
-  cursor: pointer;
-}
-
-
-.black {
-  background: #111;
-}
-
-.brown {
-  background: #734b2b;
-}
-
-.beige {
-  background: #d8c3a5;
-}
-
-
-/* PRODUCTOS */
-
-.products-area {
-  width: 100%;
-}
-
-
-.products-top {
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  margin-bottom: 25px;
-}
-
-
-.products-top h2 {
-  font-size: 18px;
-
-  font-weight: 500;
-}
-
-
-.products-top select {
-  border: 1px solid #ddd;
-
-  padding: 8px 12px;
-
-  background: white;
-}
-
-
-/* GRID */
-
-.products-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(180px, 1fr));
-
-  gap: 35px 20px;
-}
-
-
-/* PRODUCTO */
-
-.product {
-  text-align: center;
-
-  transition: 0.2s;
-}
-
-
-.product:hover {
-  transform: translateY(-4px);
-}
-
-
-.product img {
-  width: 100%;
-
-  aspect-ratio: 3 / 4;
-
-  object-fit: cover;
-
-  background: #f2f2f2;
-}
-
-
-.product h3 {
-  margin-top: 12px;
-
-  font-size: 14px;
-
-  font-weight: 500;
-}
-
-
-.description {
-  font-size: 12px;
-
-  color: #777;
-
-  margin: 7px 0;
-}
-
-
-.price {
-  display: block;
-
-  font-size: 14px;
-
-  font-weight: bold;
-
-  margin-bottom: 10px;
-}
-
-
-.product button {
-  width: 100%;
-
-  padding: 10px;
-
-  border: 1px solid #222;
-
-  background: white;
-
-  cursor: pointer;
-
-  transition: 0.2s;
-}
-
-
-.product button:hover {
-  background: #111;
-
-  color: white;
-}
-
-
-/* CARRITO */
-
-.cart-panel {
-  position: fixed;
-
-  right: -420px;
-  top: 0;
-
-  width: 400px;
-  height: 100vh;
-
-  background: white;
-
-  z-index: 1000;
-
-  padding: 25px;
-
-  box-shadow: -5px 0 30px rgba(0,0,0,0.15);
-
-  transition: 0.3s;
-}
-
-
-.cart-panel.open {
-  right: 0;
-}
-
-
-.cart-header {
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  border-bottom: 1px solid #ddd;
-
-  padding-bottom: 15px;
-
-  margin-bottom: 20px;
-}
-
-
-.cart-header button {
-  border: none;
-
-  background: none;
-
-  font-size: 22px;
-
-  cursor: pointer;
-}
-
-
-.cart-item {
-  display: flex;
-
-  justify-content: space-between;
-
-  padding: 12px 0;
-
-  border-bottom: 1px solid #eee;
-}
-
-
-.cart-item button {
-  border: none;
-
-  background: none;
-
-  cursor: pointer;
-
-  color: #999;
-}
-
-
-.cart-total {
-  margin-top: 25px;
-
-  display: flex;
-
-  justify-content: space-between;
-
-  font-size: 18px;
-}
-
-
-.whatsapp-button {
-  width: 100%;
-
-  margin-top: 20px;
-
-  padding: 14px;
-
-  border: none;
-
-  background: #111;
-
-  color: white;
-
-  font-size: 14px;
-
-  cursor: pointer;
-}
-
-
-/* RESPONSIVE */
-
-@media (max-width: 1000px) {
-
-  .products-grid {
-    grid-template-columns:
-      repeat(3, 1fr);
   }
 
 }
 
 
-@media (max-width: 800px) {
+/* =========================
+   WHATSAPP
+========================= */
 
-  .menu {
-    display: none;
+function sendWhatsApp() {
+
+  if (cart.length === 0) {
+
+    alert(
+      "Primero agrega productos al carrito."
+    );
+
+    return;
+
   }
 
-  .shop-container {
-    grid-template-columns: 1fr;
-  }
 
-  .filters {
-    border-right: none;
+  let message =
+    "Hola EGUIS, quiero realizar el siguiente pedido:\n\n";
 
-    border-bottom: 1px solid #ddd;
 
-    padding-bottom: 20px;
-  }
+  let total = 0;
 
-  .products-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
+
+  cart.forEach(item => {
+
+    const subtotal =
+      item.price * item.quantity;
+
+
+    total += subtotal;
+
+
+    message +=
+      `${item.quantity} x ${item.name} - S/ ${subtotal.toFixed(2)}\n`;
+
+  });
+
+
+  message +=
+    `\nTotal: S/ ${total.toFixed(2)}`;
+
+
+  /*
+    COLOCA AQUÍ EL WHATSAPP
+    DE EGUIS.
+
+    Ejemplo Perú:
+    51987654321
+  */
+
+  const phone =
+    "51999999999";
+
+
+  const url =
+    `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+
+  window.open(
+    url,
+    "_blank"
+  );
+
+}
+
+
+/* =========================
+   FILTROS
+========================= */
+
+const genderRadios =
+  document.querySelectorAll(
+    'input[name="genero"]'
+  );
+
+
+genderRadios.forEach(radio => {
+
+  radio.addEventListener(
+    "change",
+    applyFilters
+  );
+
+});
+
+
+function applyFilters() {
+
+  const selectedGender =
+    document.querySelector(
+      'input[name="genero"]:checked'
+    ).value;
+
+
+  const products =
+    document.querySelectorAll(
+      ".product"
+    );
+
+
+  products.forEach(product => {
+
+    const gender =
+      product.dataset.gender;
+
+
+    const color =
+      product.dataset.color;
+
+
+    const genderMatches =
+      selectedGender === "todos" ||
+      selectedGender === gender;
+
+
+    const colorMatches =
+      selectedColor === "todos" ||
+      selectedColor === color;
+
+
+    if (
+      genderMatches &&
+      colorMatches
+    ) {
+
+      product.style.display = "";
+
+    } else {
+
+      product.style.display = "none";
+
+    }
+
+  });
+
+}
+
+
+function filterColor(color) {
+
+  selectedColor = color;
+
+  applyFilters();
+
+}
+
+
+function clearColorFilter() {
+
+  selectedColor = "todos";
+
+  applyFilters();
+
+}
+
+
+function showGender(gender) {
+
+  const radio =
+    document.querySelector(
+      `input[name="genero"][value="${gender}"]`
+    );
+
+
+  if (radio) {
+
+    radio.checked = true;
+
+    applyFilters();
+
   }
 
 }
 
 
-@media (max-width: 500px) {
+/* =========================
+   ORDENAR
+========================= */
 
-  main {
-    width: 95%;
-  }
+document
+  .getElementById("sort-products")
+  .addEventListener(
+    "change",
+    function () {
 
-  .products-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
+      const grid =
+        document.getElementById(
+          "products-grid"
+        );
 
-    gap: 25px 10px;
-  }
 
-  .cart-panel {
-    width: 100%;
+      const products =
+        Array.from(
+          grid.querySelectorAll(
+            ".product"
+          )
+        );
+
+
+      if (
+        this.value === "price-low"
+      ) {
+
+        products.sort(
+          (a, b) =>
+            Number(a.dataset.price) -
+            Number(b.dataset.price)
+        );
+
+      }
+
+
+      if (
+        this.value === "price-high"
+      ) {
+
+        products.sort(
+          (a, b) =>
+            Number(b.dataset.price) -
+            Number(a.dataset.price)
+        );
+
+      }
+
+
+      products.forEach(product => {
+
+        grid.appendChild(product);
+
+      });
+
+    }
+  );
+
+
+/* =========================
+   FILTROS MÓVILES
+========================= */
+
+function toggleFilters() {
+
+  const filters =
+    document.getElementById("filters");
+
+
+  const isOpen =
+    filters.classList.contains("open");
+
+
+  closePanels();
+
+
+  if (!isOpen) {
+
+    filters.classList.add("open");
+
+
+    document
+      .getElementById("overlay")
+      .classList.add("active");
+
   }
 
 }
+
+
+/* =========================
+   MENÚ MÓVIL
+========================= */
+
+function toggleMobileMenu() {
+
+  document
+    .getElementById("mobile-menu")
+    .classList.toggle("open");
+
+}
+
+
+/* =========================
+   CERRAR PANELES
+========================= */
+
+function closePanels() {
+
+  document
+    .getElementById("cart-panel")
+    .classList.remove("open");
+
+
+  document
+    .getElementById("filters")
+    .classList.remove("open");
+
+
+  document
+    .getElementById("overlay")
+    .classList.remove("active");
+
+}
+
+
+/* =========================
+   INICIO
+========================= */
+
+updateCart();
