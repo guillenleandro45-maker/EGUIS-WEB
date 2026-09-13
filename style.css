@@ -1,6 +1,4 @@
-body {
-    background-color: red !important;
-}
+
 let cart = [];
 
 let selectedColor = "todos";
