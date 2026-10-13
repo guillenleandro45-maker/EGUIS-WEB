@@ -982,3 +982,31 @@ main {
   }
 
 }
+
+/* Imagen del producto ampliada */
+.zoom-imagen {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.zoom-imagen img {
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+  cursor: zoom-out;
+}
+
+.zoom-imagen.activo {
+  display: flex;
+}
+
+/* Indicar que la imagen se puede seleccionar */
+.product-image img {
+  cursor: zoom-in;
+}
