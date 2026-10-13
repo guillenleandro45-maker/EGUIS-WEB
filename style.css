@@ -158,7 +158,7 @@ button {
       rgba(0, 0, 0, 0.30),
       rgba(0, 0, 0, 0.30)
     ),
-    url("IMAGENES/portada.png");
+    url("imagenes/portada.png");
 
   background-size: cover;
   background-position: center;
