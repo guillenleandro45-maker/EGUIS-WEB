@@ -456,7 +456,7 @@ main {
 }
 
 .product:hover .product-image img {
-  transform: scale(1.03);
+  transform: scale(1.08);
 }
 
 .product-info {
