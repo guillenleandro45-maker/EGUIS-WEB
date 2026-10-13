@@ -526,5 +526,25 @@
 
   <script src="script.js"></script>
 
-</body>
+<!-- Visor de imagen ampliada -->
+<div class="zoom-imagen" id="zoomImagen">
+  <img id="imagenAmpliada" src="" alt="Producto ampliado">
+</div>
+
+<script>
+  const visor = document.getElementById("zoomImagen");
+  const imagenAmpliada = document.getElementById("imagenAmpliada");
+
+  document.querySelectorAll(".product-image img").forEach(imagen => {
+    imagen.addEventListener("click", () => {
+      imagenAmpliada.src = imagen.src;
+      visor.classList.add("activo");
+    });
+  });
+
+  visor.addEventListener("click", () => {
+    visor.classList.remove("activo");
+  });
+</script>
+</body> 
 </html>
