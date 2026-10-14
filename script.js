@@ -53,8 +53,8 @@ const productCatalog = {
     price: 5,
     unit: "unidad"
   },
-  "hebilla-giratoria-negra": {
-    name: "Hebilla Giratoria-caballo",
+  "hebilla-giratoria-plata": {
+    name: "Hebilla Giratoria - caballo",
     price: 5,
     unit: "unidad"
   }
