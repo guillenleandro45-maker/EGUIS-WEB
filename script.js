@@ -13,11 +13,6 @@ const BELT_UNITS_PER_DOZEN = 12;
 let cart = [];
 let selectedColor = "todos";
 
-/*
-  Los cinturones se cobran por docena.
-  Las hebillas se cobran por unidad.
-*/
-
 const productCatalog = {
   "cinturon-negro": {
     name: "Cinturón Clásico Negro - Hombre",
@@ -25,46 +20,39 @@ const productCatalog = {
     unit: "docena",
     unitsPerPack: BELT_UNITS_PER_DOZEN
   },
-
   "cinturon-marron": {
     name: "Cinturón Marrón - Hombre",
     price: BELT_PRICE_DOZEN,
     unit: "docena",
     unitsPerPack: BELT_UNITS_PER_DOZEN
   },
-
   "cinturon-mujer-negro": {
     name: "Cinturón Dama Negro",
     price: BELT_PRICE_DOZEN,
     unit: "docena",
     unitsPerPack: BELT_UNITS_PER_DOZEN
   },
-
   "cinturon-mujer-beige": {
     name: "Cinturón Dama Beige",
     price: BELT_PRICE_DOZEN,
     unit: "docena",
     unitsPerPack: BELT_UNITS_PER_DOZEN
   },
-
   "hebilla-lisa-plata": {
     name: "Hebilla Lisa Plateada",
     price: BUCKLE_PRICE_UNIT,
     unit: "unidad"
   },
-
   "hebilla-lisa-negra": {
     name: "Hebilla Lisa Negra",
     price: BUCKLE_PRICE_UNIT,
     unit: "unidad"
   },
-
   "hebilla-giratoria-plata": {
     name: "Hebilla Giratoria Plateada",
     price: BUCKLE_PRICE_UNIT,
     unit: "unidad"
   },
-
   "hebilla-giratoria-negra": {
     name: "Hebilla Giratoria Negra",
     price: BUCKLE_PRICE_UNIT,
@@ -110,13 +98,13 @@ function addProduct(id) {
 
   updateCart();
 
-  // Confirmación discreta; no abre el carrito.
   const button = document.querySelector(
     `.product[data-id="${id}"] .add-button`
   );
 
   if (button) {
     const originalText = "AGREGAR AL PEDIDO";
+
     button.textContent = "AGREGADO ✓";
     button.classList.add("added");
 
@@ -136,6 +124,8 @@ function updateCart() {
   const cartCount = document.getElementById("cart-count");
   const cartTotal = document.getElementById("cart-total");
 
+  if (!cartItems || !cartCount || !cartTotal) return;
+
   cartItems.replaceChildren();
 
   let total = 0;
@@ -145,7 +135,6 @@ function updateCart() {
     const subtotal = item.price * item.quantity;
 
     total += subtotal;
-
     totalUnits += item.quantity * item.unitsPerPack;
 
     const row = document.createElement("div");
@@ -173,7 +162,8 @@ function updateCart() {
 
     const subtotalText = document.createElement("div");
     subtotalText.className = "cart-subtotal";
-    subtotalText.textContent = `Subtotal: S/ ${subtotal.toFixed(2)}`;
+    subtotalText.textContent =
+      `Subtotal: S/ ${subtotal.toFixed(2)}`;
 
     details.append(title, info, subtotalText);
 
@@ -181,8 +171,14 @@ function updateCart() {
     removeButton.type = "button";
     removeButton.className = "remove-item";
     removeButton.textContent = "✕";
-    removeButton.setAttribute("aria-label", `Eliminar ${item.name}`);
-    removeButton.addEventListener("click", () => removeFromCart(index));
+    removeButton.setAttribute(
+      "aria-label",
+      `Eliminar ${item.name}`
+    );
+
+    removeButton.addEventListener("click", () => {
+      removeFromCart(index);
+    });
 
     row.append(details, removeButton);
     cartItems.appendChild(row);
@@ -191,7 +187,9 @@ function updateCart() {
   if (cart.length === 0) {
     const empty = document.createElement("p");
     empty.className = "empty-cart";
-    empty.textContent = "Todavía no has agregado productos.";
+    empty.textContent =
+      "Todavía no has agregado productos.";
+
     cartItems.appendChild(empty);
   }
 
@@ -209,13 +207,19 @@ function removeFromCart(index) {
 ========================= */
 
 function openCart() {
-  document.getElementById("cart-panel").classList.add("open");
-  document.getElementById("overlay").classList.add("active");
+  document.getElementById("cart-panel")
+    ?.classList.add("open");
+
+  document.getElementById("overlay")
+    ?.classList.add("active");
+
   document.body.classList.add("panel-open");
 }
 
 function toggleCart() {
   const panel = document.getElementById("cart-panel");
+
+  if (!panel) return;
 
   if (panel.classList.contains("open")) {
     closePanels();
@@ -225,9 +229,15 @@ function toggleCart() {
 }
 
 function closePanels() {
-  document.getElementById("cart-panel").classList.remove("open");
-  document.getElementById("filters").classList.remove("open");
-  document.getElementById("overlay").classList.remove("active");
+  document.getElementById("cart-panel")
+    ?.classList.remove("open");
+
+  document.getElementById("filters")
+    ?.classList.remove("open");
+
+  document.getElementById("overlay")
+    ?.classList.remove("active");
+
   document.body.classList.remove("panel-open");
 }
 
@@ -248,7 +258,6 @@ function sendWhatsApp() {
 
   cart.forEach(item => {
     const subtotal = item.price * item.quantity;
-
     total += subtotal;
 
     if (item.unit === "docena") {
@@ -278,109 +287,198 @@ function sendWhatsApp() {
 }
 
 /* =========================
-   FILTROS DE CATEGORÍA
+   FILTROS DEL CATÁLOGO
 ========================= */
 
-document.querySelectorAll('input[name="categoria"]').forEach(radio => {
-  radio.addEventListener("change", applyFilters);
-});
+function getCheckedValue(name, fallback = "todos") {
+  return document.querySelector(
+    `input[name="${name}"]:checked`
+  )?.value || fallback;
+}
 
-document.querySelectorAll('input[name="tipoHebilla"]').forEach(radio => {
-  radio.addEventListener("change", applyFilters);
-});
-
-function showCategory(category) {
+function setRadioValue(name, value) {
   const radio = document.querySelector(
-    `input[name="categoria"][value="${category}"]`
+    `input[name="${name}"][value="${value}"]`
   );
 
-  if (radio) {
-    radio.checked = true;
-    applyFilters();
+  if (radio) radio.checked = true;
+}
+
+function showCategory(category) {
+  /*
+    Compatible con los enlaces del menú actual:
+    HOMBRE, MUJER y HEBILLAS.
+  */
+
+  if (category === "hombre") {
+    setRadioValue("categoria", "cinturones");
+    setRadioValue("publico", "hombre");
+  } else if (category === "mujer") {
+    setRadioValue("categoria", "cinturones");
+    setRadioValue("publico", "mujer");
+  } else if (category === "hebillas") {
+    setRadioValue("categoria", "hebillas");
+    setRadioValue("publico", "todos");
+  } else {
+    setRadioValue("categoria", "todos");
+    setRadioValue("publico", "todos");
   }
+
+  selectedColor = "todos";
+  setRadioValue("tipoHebilla", "todos");
+
+  updateColorButtons();
+  applyFilters();
+  closeMobileMenu();
 }
 
 function filterColor(color) {
   selectedColor = color;
+  updateColorButtons();
   applyFilters();
 }
 
 function clearColorFilter() {
   selectedColor = "todos";
+  updateColorButtons();
+  applyFilters();
+}
+
+function updateColorButtons() {
+  document.querySelectorAll(".color-options .color")
+    .forEach(button => {
+      const title = (button.title || "").toLowerCase();
+
+      const buttonColor =
+        title === "negro" ? "negro" :
+        title === "marrón" || title === "marron" ? "marron" :
+        title === "beige" ? "beige" : "";
+
+      button.classList.toggle(
+        "selected",
+        selectedColor !== "todos" &&
+        buttonColor === selectedColor
+      );
+    });
+
+  document.querySelectorAll(".clear-color")
+    .forEach(button => {
+      button.classList.toggle(
+        "selected",
+        selectedColor === "todos"
+      );
+    });
+}
+
+function resetFilters() {
+  setRadioValue("categoria", "todos");
+  setRadioValue("publico", "todos");
+  setRadioValue("tipoHebilla", "todos");
+
+  selectedColor = "todos";
+
+  updateColorButtons();
   applyFilters();
 }
 
 function applyFilters() {
-  const category = document.querySelector(
-    'input[name="categoria"]:checked'
-  )?.value || "todos";
+  const category = getCheckedValue("categoria");
+  const audience = getCheckedValue("publico");
+  const buckleType = getCheckedValue("tipoHebilla");
 
-  const buckleType = document.querySelector(
-    'input[name="tipoHebilla"]:checked'
-  )?.value || "todos";
+  const buckleGroup =
+    document.getElementById("buckle-filter-group");
+
+  /*
+    Oculta el filtro de hebillas si se eligieron
+    cinturones o el público mujer.
+  */
+  const showBuckleFilter =
+    category !== "cinturones" &&
+    audience !== "mujer";
+
+  if (buckleGroup) {
+    buckleGroup.hidden = !showBuckleFilter;
+  }
+
+  let visibleCount = 0;
 
   document.querySelectorAll(".product").forEach(product => {
+    const productType = product.dataset.type || "";
+    const productCategory = product.dataset.category || "";
+    const productColor = product.dataset.color || "";
+    const productBuckle = product.dataset.buckle || "";
+
+    const isBelt = productType === "cinturon";
+    const isBuckle = productType === "hebilla";
+
+    // Categoría: cinturones o hebillas.
     const categoryMatch =
       category === "todos" ||
-      product.dataset.category === category;
+      (category === "cinturones" && isBelt) ||
+      (category === "hebillas" && isBuckle);
 
+    // Público: los cinturones tienen categoría hombre/mujer.
+    // Las hebillas se consideran de hombre en este catálogo.
+    const audienceMatch =
+      audience === "todos" ||
+      (audience === "hombre" &&
+        (productCategory === "hombre" || isBuckle)) ||
+      (audience === "mujer" &&
+        productCategory === "mujer" && isBelt);
+
+    // Color.
     const colorMatch =
       selectedColor === "todos" ||
-      product.dataset.color === selectedColor;
+      productColor === selectedColor;
 
-    const type = product.dataset.buckle || "todos";
-
+    /*
+      Cuando se selecciona Lisa o Giratoria,
+      se muestran únicamente hebillas de ese tipo.
+    */
     const buckleMatch =
       buckleType === "todos" ||
-      type === buckleType ||
-      product.dataset.type !== "hebilla";
+      (isBuckle && productBuckle === buckleType);
 
-    product.hidden = !(
+    const visible =
       categoryMatch &&
+      audienceMatch &&
       colorMatch &&
-      buckleMatch
-    );
+      buckleMatch;
+
+    product.hidden = !visible;
+
+    if (visible) visibleCount++;
   });
 
   const titles = {
     todos: "Nuestra colección",
-    hombre: "Cinturones para hombre",
-    mujer: "Cinturones para mujer",
-    hebillas: "Hebillas para hombre"
+    cinturones: "Nuestros cinturones",
+    hebillas: "Nuestras hebillas"
   };
 
-  document.getElementById("catalog-title").textContent =
-    titles[category] || titles.todos;
-}
+  const titleElement = document.getElementById("catalog-title");
 
-/* =========================
-   ORDENAR PRODUCTOS
-========================= */
-
-document.getElementById("sort-products").addEventListener("change", function () {
-  const grid = document.getElementById("products-grid");
-
-  const products = Array.from(grid.querySelectorAll(".product"));
-
-  if (this.value === "price-low") {
-    products.sort((a, b) =>
-      Number(a.dataset.price) - Number(b.dataset.price)
-    );
-  } else if (this.value === "price-high") {
-    products.sort((a, b) =>
-      Number(b.dataset.price) - Number(a.dataset.price)
-    );
-  } else if (this.value === "name") {
-    products.sort((a, b) =>
-      a.querySelector("h3").textContent.localeCompare(
-        b.querySelector("h3").textContent,
-        "es"
-      )
-    );
+  if (titleElement) {
+    if (audience === "hombre" && category === "cinturones") {
+      titleElement.textContent = "Cinturones para hombre";
+    } else if (
+      audience === "mujer" &&
+      category === "cinturones"
+    ) {
+      titleElement.textContent = "Cinturones para mujer";
+    } else {
+      titleElement.textContent = titles[category] || titles.todos;
+    }
   }
 
-  products.forEach(product => grid.appendChild(product));
-});
+  const countElement = document.getElementById("filter-results-count");
+
+  if (countElement) {
+    countElement.textContent =
+      `${visibleCount} producto(s) encontrado(s)`;
+  }
+}
 
 /* =========================
    FILTROS MÓVILES
@@ -389,12 +487,17 @@ document.getElementById("sort-products").addEventListener("change", function () 
 function toggleFilters() {
   const filters = document.getElementById("filters");
 
+  if (!filters) return;
+
   if (filters.classList.contains("open")) {
     closePanels();
   } else {
     closePanels();
     filters.classList.add("open");
-    document.getElementById("overlay").classList.add("active");
+
+    document.getElementById("overlay")
+      ?.classList.add("active");
+
     document.body.classList.add("panel-open");
   }
 }
@@ -404,7 +507,13 @@ function toggleFilters() {
 ========================= */
 
 function toggleMobileMenu() {
-  document.getElementById("mobile-menu").classList.toggle("open");
+  document.getElementById("mobile-menu")
+    ?.classList.toggle("open");
+}
+
+function closeMobileMenu() {
+  document.getElementById("mobile-menu")
+    ?.classList.remove("open");
 }
 
 /* =========================
@@ -416,6 +525,8 @@ const imagenAmpliada = document.getElementById("imagenAmpliada");
 
 document.querySelectorAll(".product-image img").forEach(img => {
   img.addEventListener("click", () => {
+    if (!visor || !imagenAmpliada) return;
+
     imagenAmpliada.src = img.src;
     imagenAmpliada.alt = img.alt;
     visor.classList.add("activo");
@@ -431,11 +542,14 @@ document.querySelectorAll(".product-image img").forEach(img => {
 });
 
 function closeZoom() {
-  visor.classList.remove("activo");
-  imagenAmpliada.src = "";
+  visor?.classList.remove("activo");
+
+  if (imagenAmpliada) {
+    imagenAmpliada.src = "";
+  }
 }
 
-visor.addEventListener("click", event => {
+visor?.addEventListener("click", event => {
   if (event.target === visor) {
     closeZoom();
   }
@@ -445,7 +559,7 @@ document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     closeZoom();
     closePanels();
-    document.getElementById("mobile-menu").classList.remove("open");
+    closeMobileMenu();
   }
 });
 
@@ -453,5 +567,24 @@ document.addEventListener("keydown", event => {
    INICIALIZAR
 ========================= */
 
+document.querySelectorAll(
+  'input[name="categoria"], input[name="publico"], input[name="tipoHebilla"]'
+).forEach(radio => {
+  radio.addEventListener("change", () => {
+    const category = getCheckedValue("categoria");
+    const audience = getCheckedValue("publico");
+
+    if (
+      category === "cinturones" ||
+      audience === "mujer"
+    ) {
+      setRadioValue("tipoHebilla", "todos");
+    }
+
+    applyFilters();
+  });
+});
+
 updateCart();
+updateColorButtons();
 applyFilters();
