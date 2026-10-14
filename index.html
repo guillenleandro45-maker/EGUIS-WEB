@@ -1,44 +1,59 @@
-```html
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Tienda EGUIS: cinturones para hombre y mujer, y hebillas.">
   <title>EGUIS | Cinturones y Hebillas</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- ENCABEZADO -->
   <header class="header">
     <div class="header-left">
-      <button class="menu-mobile-button" onclick="toggleMobileMenu()" aria-label="Abrir menú">☰</button>
+      <button
+        class="menu-mobile-button"
+        onclick="toggleMobileMenu()"
+        aria-label="Abrir menú"
+        type="button"
+      >☰</button>
+
       <a href="#inicio" class="logo">EGUIS</a>
     </div>
 
     <nav class="menu">
       <a href="#inicio">INICIO</a>
-      <a href="#productos">COLECCIÓN</a>
+      <a href="#productos" onclick="showCategory('todos')">COLECCIÓN</a>
       <a href="#productos" onclick="showCategory('hombre')">HOMBRE</a>
       <a href="#productos" onclick="showCategory('mujer')">MUJER</a>
       <a href="#productos" onclick="showCategory('hebillas')">HEBILLAS</a>
       <a href="#contacto">CONTACTO</a>
     </nav>
 
-    <button class="cart-button" onclick="toggleCart()" aria-label="Abrir carrito">
+    <button
+      class="cart-button"
+      onclick="toggleCart()"
+      aria-label="Abrir carrito"
+      type="button"
+    >
       🛒 <span id="cart-count">0</span>
     </button>
   </header>
 
+  <!-- MENÚ MÓVIL -->
   <nav id="mobile-menu" class="mobile-menu">
     <a href="#inicio" onclick="toggleMobileMenu()">Inicio</a>
-    <a href="#productos" onclick="toggleMobileMenu()">Colección</a>
+    <a href="#productos" onclick="showCategory('todos'); toggleMobileMenu()">Colección</a>
     <a href="#productos" onclick="showCategory('hombre'); toggleMobileMenu()">Hombre</a>
     <a href="#productos" onclick="showCategory('mujer'); toggleMobileMenu()">Mujer</a>
     <a href="#productos" onclick="showCategory('hebillas'); toggleMobileMenu()">Hebillas</a>
     <a href="#contacto" onclick="toggleMobileMenu()">Contacto</a>
   </nav>
 
+  <!-- PORTADA -->
   <section id="inicio" class="hero">
     <div class="hero-content">
       <p class="hero-small">EGUIS</p>
@@ -49,60 +64,198 @@
   </section>
 
   <main>
-    <div class="breadcrumb">Inicio › Colección › Cinturones y hebillas</div>
+    <div class="breadcrumb">
+      Inicio › Colección › Cinturones y hebillas
+    </div>
 
     <section id="productos" class="shop-container">
 
+      <!-- FILTROS -->
       <aside id="filters" class="filters">
         <div class="filters-title">
           <h3>Filtros</h3>
-          <button class="close-filters" onclick="toggleFilters()">✕</button>
+          <button
+            class="close-filters"
+            onclick="toggleFilters()"
+            type="button"
+            aria-label="Cerrar filtros"
+          >✕</button>
         </div>
 
-           
+        <!-- CATEGORÍA -->
         <div class="filter-group">
           <h4>Categoría</h4>
-          <label><input type="radio" name="categoria" value="todos" checked> Todos</label>
-          <label><input type="radio" name="categoria" value="cinturones"> Cinturones</label>
-          <label><input type="radio" name="categoria" value="hebillas"> Hebillas</label>
+
+          <label>
+            <input
+              type="radio"
+              name="categoria"
+              value="todos"
+              checked
+            >
+            Todos
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="categoria"
+              value="cinturones"
+            >
+            Cinturones
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="categoria"
+              value="hebillas"
+            >
+            Hebillas
+          </label>
         </div>
 
+        <!-- PÚBLICO -->
         <div class="filter-group">
-          <h4>Tipo de hebilla</h4>
-          <label><input type="radio" name="tipoHebilla" value="todos" checked> Todos</label>
-          <label><input type="radio" name="tipoHebilla" value="lisa"> Lisa</label>
-          <label><input type="radio" name="tipoHebilla" value="giratoria"> Giratoria</label>
+          <h4>Público</h4>
+
+          <label>
+            <input
+              type="radio"
+              name="publico"
+              value="todos"
+              checked
+            >
+            Todos
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="publico"
+              value="hombre"
+            >
+            Hombre
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="publico"
+              value="mujer"
+            >
+            Mujer
+          </label>
         </div>
 
+        <!-- COLOR -->
         <div class="filter-group">
           <h4>Color</h4>
+
           <div class="color-options">
-            <button class="color black" onclick="filterColor('negro')" title="Negro"></button>
-            <button class="color brown" onclick="filterColor('marron')" title="Marrón"></button>
-            <button class="color beige" onclick="filterColor('beige')" title="Beige"></button>
-            <button class="clear-color" onclick="clearColorFilter()">Todos</button>
+            <button
+              type="button"
+              class="color black"
+              onclick="filterColor('negro')"
+              title="Negro"
+              aria-label="Filtrar por color negro"
+            ></button>
+
+            <button
+              type="button"
+              class="color brown"
+              onclick="filterColor('marron')"
+              title="Marrón"
+              aria-label="Filtrar por color marrón"
+            ></button>
+
+            <button
+              type="button"
+              class="color beige"
+              onclick="filterColor('beige')"
+              title="Beige"
+              aria-label="Filtrar por color beige"
+            ></button>
+
+            <button
+              type="button"
+              class="clear-color"
+              onclick="clearColorFilter()"
+            >
+              Todos
+            </button>
           </div>
         </div>
+
+        <!-- TIPO DE HEBILLA -->
+        <div class="filter-group" id="buckle-filter-group">
+          <h4>Tipo de hebilla</h4>
+
+          <label>
+            <input
+              type="radio"
+              name="tipoHebilla"
+              value="todos"
+              checked
+            >
+            Todas
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="tipoHebilla"
+              value="lisa"
+            >
+            Lisa
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="tipoHebilla"
+              value="giratoria"
+            >
+            Giratoria
+          </label>
+        </div>
+
+        <!-- RESTABLECER FILTROS -->
+        <button
+          type="button"
+          class="reset-filters"
+          onclick="resetFilters()"
+        >
+          LIMPIAR FILTROS
+        </button>
       </aside>
 
+      <!-- CATÁLOGO -->
       <section class="products-area">
+
         <div class="products-header">
           <div>
             <p class="section-label">EGUIS</p>
             <h2 id="catalog-title">Nuestra colección</h2>
+
             <p class="catalog-subtitle">
               Cinturones por docena y hebillas por unidad.
             </p>
+
+            <p id="filter-results-count" aria-live="polite">
+              8 producto(s) encontrado(s)
+            </p>
           </div>
 
+          <!-- SOLO FILTRAR EN MÓVILES; SIN ORDENAR -->
           <div class="mobile-actions">
-            <button class="filter-mobile-button" onclick="toggleFilters()">FILTRAR</button>
-            <select id="sort-products" aria-label="Ordenar productos">
-              <option value="default">Ordenar</option>
-              <option value="price-low">Precio menor</option>
-              <option value="price-high">Precio mayor</option>
-              <option value="name">Nombre</option>
-            </select>
+            <button
+              class="filter-mobile-button"
+              onclick="toggleFilters()"
+              type="button"
+            >
+              FILTRAR
+            </button>
           </div>
         </div>
 
@@ -110,145 +263,431 @@
 
           <!-- CINTURONES PARA HOMBRE -->
 
-          <article class="product" data-id="cinturon-negro"
-            data-category="hombre" data-type="cinturon"
-            data-color="negro" data-price="100">
+          <article
+            class="product"
+            data-id="cinturon-negro"
+            data-category="hombre"
+            data-type="cinturon"
+            data-color="negro"
+            data-price="100"
+          >
             <div class="product-image">
-              <img src="imagenes/bala.jpg" alt="Cinturón negro para hombre" loading="lazy">
+              <img
+                src="imagenes/bala.jpg"
+                alt="Cinturón negro para hombre"
+                loading="lazy"
+              >
             </div>
+
             <div class="product-info">
               <p class="product-category">Hombre · Cinturón</p>
               <h3>Cinturón Clásico Negro</h3>
-              <span class="price">S/ 100.00 <small>/ docena</small></span>
+
+              <span class="price">
+                S/ 100.00 <small>/ docena</small>
+              </span>
+
               <p class="unit-note">12 unidades por docena</p>
-              <label class="quantity-label" for="qty-cinturon-negro">Cantidad de docenas</label>
-              <input class="quantity-input" id="qty-cinturon-negro" type="number" min="1" step="1" value="1">
-              <button class="add-button" onclick="addProduct('cinturon-negro')">AGREGAR AL PEDIDO</button>
+
+              <label class="quantity-label" for="qty-cinturon-negro">
+                Cantidad de docenas
+              </label>
+
+              <input
+                class="quantity-input"
+                id="qty-cinturon-negro"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+              >
+
+              <button
+                class="add-button"
+                type="button"
+                onclick="addProduct('cinturon-negro')"
+              >
+                AGREGAR AL PEDIDO
+              </button>
             </div>
           </article>
 
-          <article class="product" data-id="cinturon-marron"
-            data-category="hombre" data-type="cinturon"
-            data-color="marron" data-price="100">
+          <article
+            class="product"
+            data-id="cinturon-marron"
+            data-category="hombre"
+            data-type="cinturon"
+            data-color="marron"
+            data-price="100"
+          >
             <div class="product-image">
-              <img src="imagenes/dos-bala.jpg" alt="Cinturón marrón para hombre" loading="lazy">
+              <img
+                src="imagenes/dos-bala.jpg"
+                alt="Cinturón marrón para hombre"
+                loading="lazy"
+              >
             </div>
+
             <div class="product-info">
               <p class="product-category">Hombre · Cinturón</p>
               <h3>Cinturón Marrón</h3>
-              <span class="price">S/ 100.00 <small>/ docena</small></span>
+
+              <span class="price">
+                S/ 100.00 <small>/ docena</small>
+              </span>
+
               <p class="unit-note">12 unidades por docena</p>
-              <label class="quantity-label" for="qty-cinturon-marron">Cantidad de docenas</label>
-              <input class="quantity-input" id="qty-cinturon-marron" type="number" min="1" step="1" value="1">
-              <button class="add-button" onclick="addProduct('cinturon-marron')">AGREGAR AL PEDIDO</button>
+
+              <label class="quantity-label" for="qty-cinturon-marron">
+                Cantidad de docenas
+              </label>
+
+              <input
+                class="quantity-input"
+                id="qty-cinturon-marron"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+              >
+
+              <button
+                class="add-button"
+                type="button"
+                onclick="addProduct('cinturon-marron')"
+              >
+                AGREGAR AL PEDIDO
+              </button>
             </div>
           </article>
 
           <!-- CINTURONES PARA MUJER -->
 
-          <article class="product" data-id="cinturon-mujer-negro"
-            data-category="mujer" data-type="cinturon"
-            data-color="negro" data-price="100">
+          <article
+            class="product"
+            data-id="cinturon-mujer-negro"
+            data-category="mujer"
+            data-type="cinturon"
+            data-color="negro"
+            data-price="100"
+          >
             <div class="product-image">
-              <img src="imagenes/cinturon-negro-mujer.jpg" alt="Cinturón negro para mujer" loading="lazy">
+              <img
+                src="imagenes/cinturon-negro-mujer.jpg"
+                alt="Cinturón negro para mujer"
+                loading="lazy"
+              >
             </div>
+
             <div class="product-info">
               <p class="product-category">Mujer · Cinturón</p>
               <h3>Cinturón Dama Negro</h3>
-              <span class="price">S/ 100.00 <small>/ docena</small></span>
+
+              <span class="price">
+                S/ 100.00 <small>/ docena</small>
+              </span>
+
               <p class="unit-note">12 unidades por docena</p>
-              <label class="quantity-label" for="qty-cinturon-mujer-negro">Cantidad de docenas</label>
-              <input class="quantity-input" id="qty-cinturon-mujer-negro" type="number" min="1" step="1" value="1">
-              <button class="add-button" onclick="addProduct('cinturon-mujer-negro')">AGREGAR AL PEDIDO</button>
+
+              <label
+                class="quantity-label"
+                for="qty-cinturon-mujer-negro"
+              >
+                Cantidad de docenas
+              </label>
+
+              <input
+                class="quantity-input"
+                id="qty-cinturon-mujer-negro"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+              >
+
+              <button
+                class="add-button"
+                type="button"
+                onclick="addProduct('cinturon-mujer-negro')"
+              >
+                AGREGAR AL PEDIDO
+              </button>
             </div>
           </article>
 
-          <article class="product" data-id="cinturon-mujer-beige"
-            data-category="mujer" data-type="cinturon"
-            data-color="beige" data-price="100">
+          <article
+            class="product"
+            data-id="cinturon-mujer-beige"
+            data-category="mujer"
+            data-type="cinturon"
+            data-color="beige"
+            data-price="100"
+          >
             <div class="product-image">
-              <img src="imagenes/cinturon-beige-mujer.jpg" alt="Cinturón beige para mujer" loading="lazy">
+              <img
+                src="imagenes/cinturon-beige-mujer.jpg"
+                alt="Cinturón beige para mujer"
+                loading="lazy"
+              >
             </div>
+
             <div class="product-info">
               <p class="product-category">Mujer · Cinturón</p>
               <h3>Cinturón Dama Beige</h3>
-              <span class="price">S/ 100.00 <small>/ docena</small></span>
+
+              <span class="price">
+                S/ 100.00 <small>/ docena</small>
+              </span>
+
               <p class="unit-note">12 unidades por docena</p>
-              <label class="quantity-label" for="qty-cinturon-mujer-beige">Cantidad de docenas</label>
-              <input class="quantity-input" id="qty-cinturon-mujer-beige" type="number" min="1" step="1" value="1">
-              <button class="add-button" onclick="addProduct('cinturon-mujer-beige')">AGREGAR AL PEDIDO</button>
+
+              <label
+                class="quantity-label"
+                for="qty-cinturon-mujer-beige"
+              >
+                Cantidad de docenas
+              </label>
+
+              <input
+                class="quantity-input"
+                id="qty-cinturon-mujer-beige"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+              >
+
+              <button
+                class="add-button"
+                type="button"
+                onclick="addProduct('cinturon-mujer-beige')"
+              >
+                AGREGAR AL PEDIDO
+              </button>
             </div>
           </article>
 
           <!-- HEBILLAS LISAS -->
 
-          <article class="product" data-id="hebilla-lisa-plata"
-            data-category="hebillas" data-type="hebilla"
-            data-buckle="lisa" data-color="negro" data-price="5">
+          <article
+            class="product"
+            data-id="hebilla-lisa-plata"
+            data-category="hebillas"
+            data-type="hebilla"
+            data-buckle="lisa"
+            data-color="negro"
+            data-price="5"
+          >
             <div class="product-image">
-              <img src="imagenes/hebilla-lisa-plata.jpg" alt="Hebilla lisa plateada para hombre" loading="lazy">
+              <img
+                src="imagenes/hebilla-lisa-plata.jpg"
+                alt="Hebilla lisa plateada para hombre"
+                loading="lazy"
+              >
             </div>
+
             <div class="product-info">
               <p class="product-category">Hombre · Hebilla lisa</p>
               <h3>Hebilla Lisa Plateada</h3>
-              <span class="price">S/ 5.00 <small>/ unidad</small></span>
-              <p class="unit-note">Selecciona las unidades que necesites.</p>
-              <label class="quantity-label" for="qty-hebilla-lisa-plata">Cantidad de unidades</label>
-              <input class="quantity-input" id="qty-hebilla-lisa-plata" type="number" min="1" step="1" value="1">
-              <button class="add-button" onclick="addProduct('hebilla-lisa-plata')">AGREGAR AL PEDIDO</button>
+
+              <span class="price">
+                S/ 5.00 <small>/ unidad</small>
+              </span>
+
+              <p class="unit-note">
+                Selecciona las unidades que necesites.
+              </p>
+
+              <label
+                class="quantity-label"
+                for="qty-hebilla-lisa-plata"
+              >
+                Cantidad de unidades
+              </label>
+
+              <input
+                class="quantity-input"
+                id="qty-hebilla-lisa-plata"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+              >
+
+              <button
+                class="add-button"
+                type="button"
+                onclick="addProduct('hebilla-lisa-plata')"
+              >
+                AGREGAR AL PEDIDO
+              </button>
             </div>
           </article>
 
-          <article class="product" data-id="hebilla-lisa-negra"
-            data-category="hebillas" data-type="hebilla"
-            data-buckle="lisa" data-color="negro" data-price="5">
+          <article
+            class="product"
+            data-id="hebilla-lisa-negra"
+            data-category="hebillas"
+            data-type="hebilla"
+            data-buckle="lisa"
+            data-color="negro"
+            data-price="5"
+          >
             <div class="product-image">
-              <img src="imagenes/hebilla-lisa-negra.jpg" alt="Hebilla lisa negra para hombre" loading="lazy">
+              <img
+                src="imagenes/hebilla-lisa-negra.jpg"
+                alt="Hebilla lisa negra para hombre"
+                loading="lazy"
+              >
             </div>
+
             <div class="product-info">
               <p class="product-category">Hombre · Hebilla lisa</p>
               <h3>Hebilla Lisa Negra</h3>
-              <span class="price">S/ 5.00 <small>/ unidad</small></span>
-              <p class="unit-note">Selecciona las unidades que necesites.</p>
-              <label class="quantity-label" for="qty-hebilla-lisa-negra">Cantidad de unidades</label>
-              <input class="quantity-input" id="qty-hebilla-lisa-negra" type="number" min="1" step="1" value="1">
-              <button class="add-button" onclick="addProduct('hebilla-lisa-negra')">AGREGAR AL PEDIDO</button>
+
+              <span class="price">
+                S/ 5.00 <small>/ unidad</small>
+              </span>
+
+              <p class="unit-note">
+                Selecciona las unidades que necesites.
+              </p>
+
+              <label
+                class="quantity-label"
+                for="qty-hebilla-lisa-negra"
+              >
+                Cantidad de unidades
+              </label>
+
+              <input
+                class="quantity-input"
+                id="qty-hebilla-lisa-negra"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+              >
+
+              <button
+                class="add-button"
+                type="button"
+                onclick="addProduct('hebilla-lisa-negra')"
+              >
+                AGREGAR AL PEDIDO
+              </button>
             </div>
           </article>
 
           <!-- HEBILLAS GIRATORIAS -->
 
-          <article class="product" data-id="hebilla-giratoria-plata"
-            data-category="hebillas" data-type="hebilla"
-            data-buckle="giratoria" data-color="negro" data-price="5">
+          <article
+            class="product"
+            data-id="hebilla-giratoria-plata"
+            data-category="hebillas"
+            data-type="hebilla"
+            data-buckle="giratoria"
+            data-color="negro"
+            data-price="5"
+          >
             <div class="product-image">
-              <img src="imagenes/hebilla-giratoria-plata.jpg" alt="Hebilla giratoria plateada para hombre" loading="lazy">
+              <img
+                src="imagenes/hebilla-giratoria-plata.jpg"
+                alt="Hebilla giratoria plateada para hombre"
+                loading="lazy"
+              >
             </div>
+
             <div class="product-info">
               <p class="product-category">Hombre · Hebilla giratoria</p>
               <h3>Hebilla Giratoria Plateada</h3>
-              <span class="price">S/ 5.00 <small>/ unidad</small></span>
-              <p class="unit-note">Selecciona las unidades que necesites.</p>
-              <label class="quantity-label" for="qty-hebilla-giratoria-plata">Cantidad de unidades</label>
-              <input class="quantity-input" id="qty-hebilla-giratoria-plata" type="number" min="1" step="1" value="1">
-              <button class="add-button" onclick="addProduct('hebilla-giratoria-plata')">AGREGAR AL PEDIDO</button>
+
+              <span class="price">
+                S/ 5.00 <small>/ unidad</small>
+              </span>
+
+              <p class="unit-note">
+                Selecciona las unidades que necesites.
+              </p>
+
+              <label
+                class="quantity-label"
+                for="qty-hebilla-giratoria-plata"
+              >
+                Cantidad de unidades
+              </label>
+
+              <input
+                class="quantity-input"
+                id="qty-hebilla-giratoria-plata"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+              >
+
+              <button
+                class="add-button"
+                type="button"
+                onclick="addProduct('hebilla-giratoria-plata')"
+              >
+                AGREGAR AL PEDIDO
+              </button>
             </div>
           </article>
 
-          <article class="product" data-id="hebilla-giratoria-negra"
-            data-category="hebillas" data-type="hebilla"
-            data-buckle="giratoria" data-color="negro" data-price="5">
+          <article
+            class="product"
+            data-id="hebilla-giratoria-negra"
+            data-category="hebillas"
+            data-type="hebilla"
+            data-buckle="giratoria"
+            data-color="negro"
+            data-price="5"
+          >
             <div class="product-image">
-              <img src="imagenes/hebilla-giratoria-negra.jpg" alt="Hebilla giratoria negra para hombre" loading="lazy">
+              <img
+                src="imagenes/hebilla-giratoria-negra.jpg"
+                alt="Hebilla giratoria negra para hombre"
+                loading="lazy"
+              >
             </div>
+
             <div class="product-info">
               <p class="product-category">Hombre · Hebilla giratoria</p>
               <h3>Hebilla Giratoria Negra</h3>
-              <span class="price">S/ 5.00 <small>/ unidad</small></span>
-              <p class="unit-note">Selecciona las unidades que necesites.</p>
-              <label class="quantity-label" for="qty-hebilla-giratoria-negra">Cantidad de unidades</label>
-              <input class="quantity-input" id="qty-hebilla-giratoria-negra" type="number" min="1" step="1" value="1">
-              <button class="add-button" onclick="addProduct('hebilla-giratoria-negra')">AGREGAR AL PEDIDO</button>
+
+              <span class="price">
+                S/ 5.00 <small>/ unidad</small>
+              </span>
+
+              <p class="unit-note">
+                Selecciona las unidades que necesites.
+              </p>
+
+              <label
+                class="quantity-label"
+                for="qty-hebilla-giratoria-negra"
+              >
+                Cantidad de unidades
+              </label>
+
+              <input
+                class="quantity-input"
+                id="qty-hebilla-giratoria-negra"
+                type="number"
+                min="1"
+                step="1"
+                value="1"
+              >
+
+              <button
+                class="add-button"
+                type="button"
+                onclick="addProduct('hebilla-giratoria-negra')"
+              >
+                AGREGAR AL PEDIDO
+              </button>
             </div>
           </article>
 
@@ -256,6 +695,7 @@
       </section>
     </section>
 
+    <!-- CONTACTO -->
     <section id="contacto" class="contact">
       <h2>EGUIS</h2>
       <p>Cinturones por docena y hebillas por unidad.</p>
@@ -263,15 +703,30 @@
     </section>
   </main>
 
-  <div id="overlay" class="overlay" onclick="closePanels()"></div>
+  <!-- FONDO PARA PANELES -->
+  <div
+    id="overlay"
+    class="overlay"
+    onclick="closePanels()"
+  ></div>
 
-  <aside id="cart-panel" class="cart-panel" aria-label="Carrito de compras">
+  <!-- CARRITO -->
+  <aside
+    id="cart-panel"
+    class="cart-panel"
+    aria-label="Carrito de compras"
+  >
     <div class="cart-header">
       <div>
         <p class="section-label">EGUIS</p>
         <h2>Tu pedido</h2>
       </div>
-      <button onclick="toggleCart()" aria-label="Cerrar carrito">✕</button>
+
+      <button
+        type="button"
+        onclick="toggleCart()"
+        aria-label="Cerrar carrito"
+      >✕</button>
     </div>
 
     <div id="cart-items" class="cart-items"></div>
@@ -279,22 +734,48 @@
     <div class="cart-footer">
       <div class="cart-total">
         <span>Total</span>
-        <strong>S/ <span id="cart-total">0.00</span></strong>
+        <strong>
+          S/ <span id="cart-total">0.00</span>
+        </strong>
       </div>
-      <p class="cart-note">Verifica las cantidades antes de continuar.</p>
-      <button class="whatsapp-button" onclick="sendWhatsApp()">
+
+      <p class="cart-note">
+        Verifica las cantidades antes de continuar.
+      </p>
+
+      <button
+        class="whatsapp-button"
+        type="button"
+        onclick="sendWhatsApp()"
+      >
         FINALIZAR PEDIDO POR WHATSAPP
       </button>
     </div>
   </aside>
 
-  <!-- Visor de imágenes -->
-  <div class="zoom-imagen" id="zoomImagen" role="dialog" aria-label="Imagen ampliada">
-    <button class="zoom-close" onclick="closeZoom()" aria-label="Cerrar imagen">✕</button>
-    <img id="imagenAmpliada" src="" alt="Producto ampliado">
+  <!-- VISOR DE IMÁGENES -->
+  <div
+    class="zoom-imagen"
+    id="zoomImagen"
+    role="dialog"
+    aria-label="Imagen ampliada"
+  >
+    <button
+      class="zoom-close"
+      type="button"
+      onclick="closeZoom()"
+      aria-label="Cerrar imagen"
+    >✕</button>
+
+    <img
+      id="imagenAmpliada"
+      src=""
+      alt="Producto ampliado"
+    >
   </div>
 
+  <!-- JAVASCRIPT -->
   <script src="script.js"></script>
+
 </body>
 </html>
-```
