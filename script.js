@@ -48,12 +48,12 @@ const productCatalog = {
     price: BUCKLE_PRICE_UNIT,
     unit: "unidad"
   },
- "hebilla-giratoria-plata": {
+ "hebilla-giratoria-yin yan": {
     name: "Hebilla Giratoria - Yin Yan",
     price: 5,
     unit: "unidad"
   },
-  "hebilla-giratoria-plata": {
+  "hebilla-giratoria-caballo": {
     name: "Hebilla Giratoria - caballo",
     price: 5,
     unit: "unidad"
