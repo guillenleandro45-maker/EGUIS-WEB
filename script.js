@@ -48,14 +48,14 @@ const productCatalog = {
     price: BUCKLE_PRICE_UNIT,
     unit: "unidad"
   },
-  "hebilla-giratoria-plata": {
-    name: "Hebilla Giratoria Plateada",
-    price: BUCKLE_PRICE_UNIT,
+ "hebilla-giratoria-plata": {
+    name: "Hebilla Giratoria - Yin Yan",
+    price: 5,
     unit: "unidad"
   },
   "hebilla-giratoria-negra": {
-    name: "Hebilla Giratoria Negra",
-    price: BUCKLE_PRICE_UNIT,
+    name: "Hebilla Giratoria - caballo",
+    price: 5,
     unit: "unidad"
   }
 };
